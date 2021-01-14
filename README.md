@@ -10,11 +10,13 @@ So pulling a 256-KB (262,144 byte) file from an arbitrarily large archive over t
 ```
 4096-byte archive header
 4096 * Number-Of-File-Table-Chunks
-4096 * 64-chunks (+32-byte header) = 256-KB
+4096 * 65-chunks (+64-byte header in each chunk) = 256-KB
 ```
 
-Though, keep in mind, with the possibility of removing files and maintaining a compact (no empty/zero space) archive, chunks may not always be sequential. So we may well have to seek to specific byte-offsets of the archive.. This is why byte-alignment is integral to the format of the file structure.
+Though, keep in mind, with the possibility of removing files and maintaining a compact (no empty/zero space) archive, chunks may not always be sequential. So we may well have to seek to specific byte-offsets of the archive.. This is why byte-alignment is critical and integral to the format of the file structure.
 
-Every file/directory chunk in the archive is pre-empted by a 64-byte header containing some flags as well as a unique ID to facilitate recovery of orphaned chunks
+Every file/directory chunk in the archive is pre-empted by a 64-byte header containing some flags as well as a unique ID to facilitate recovery of orphaned chunks in the case of a damaged or incomplete archive
 
 For a better understanding of the headers, flags, etc, see [Enums.cs](MSX/Enums.cs) and [Structs.cs](MSX/Structs.cs)
+
+In the future, I may add some very basic and rudimentary error checking and correction using parity bits, though this is a very long way off.. and would also dramatically increase the size of any archives made in this format. Though the trade-off may well be worth it as this is intended to be for archival storage on a NAS where disk-space is cheap and data persistence and safety is paramount.
