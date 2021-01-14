@@ -6,7 +6,20 @@ using static Mash.MSXArchive.MSX;
 
 namespace Mash.MSXArchive {
     sealed class Structs {
-
+        /// 
+        /// Because of the sheer frequency at which we'll be reading headers/chunks into these
+        /// data structures, we're doing this unmanaged and will be reading the bytes DIRECTLY
+        /// into the structs, rather than doing a manual assignment or interation of any kind
+        /// as I consider it fairly unlikely anyone will be pulling single small files from the
+        /// archive and will more realistically be pulling many large files from it (video etc)
+        /// necessitating the marshaling of potentially thousands of chunks as-fast-as-possible
+        /// 
+        /// and this is rather low-hanging fruit as far as speed-optimization goes, as well as
+        /// our memory footprint. I'm not going to be obsessive about memory utilization, this
+        /// IS C# after all, but I am still rather conscious of it. Keeping mem usage down to 
+        /// 100-200mb or so when dealing with dozens-of-gigabyte archives seems perfectly
+        /// reasonable to me
+        ///
 
         /* Struct- Archive Header (4096bytes, 512 info, 3584 author notes or null)
          * Magic Number
