@@ -15,6 +15,7 @@ namespace Mash.MSXArchive {
             this.objectOwner = ownerGuid;
             }
 
+        // this won't work, need to maintain 4k alignment at all costs, for future file>del > defrag/compact funcs to work
         public byte[] GetBytes(Stream msxStream, IOReader ior) {
             int bytesToRead = firstChunk ? 3584 : 3698;
             // seek the stream to archive.ChunkSize * chunkNumber - 128/512(depending on firstChunk)
